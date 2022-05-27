@@ -258,4 +258,43 @@ def pred_and_plot(model, filename, class_name):
   plt.axis(False);
   
   
-  # function - 8 
+  # function - 8 compare history by plots
+  def compare_hist(original_hist, new_hist, initial_epochs=5):
+
+  """
+    :params:
+      original_hist = it contain the history of model before fine tuning
+      new_hist = it contain the history of model after fine tuning
+      intial_epochs = how many epochs the model is use to run
+    :return:
+            a compare history of before and after fine_tuning  
+    """
+    # Accuracy and loss before fine tuning
+  acc = original_hist.history["accuracy"]
+  loss = original_hist.history["loss"]
+
+  val_acc = original_hist.history["val_accuracy"]
+  val_loss = original_hist.history["val_loss"]
+
+  # Accuracy and loss before fine tuning
+  total_acc = acc + new_hist.history["accuracy"]
+  total_loss = loss + new_hist.history["loss"]
+
+  total_val_acc = val_acc + new_hist.history["val_accuracy"]
+  total_val_loss = val_loss + new_hist.history["val_loss"]
+
+  # plot the compared loss curves of our models
+  plt.figure(figsize= (8, 8))
+  plt.subplot(2, 1, 1)
+  plt.plot(total_acc, label="Training_accuracy")
+  plt.plot(total_val_acc, label = "Val_accuracy")
+  plt.plot([initial_epochs-1, initial_epochs-1], plt.ylim(), label = 'Start fine tuning')
+  plt.legend(loc = "lower right")
+  plt.title("Training and Validation accuracy")
+  # plot of losses 
+  plt.subplot(2, 1, 2)
+  plt.plot(total_loss, label="Training_accurloss")
+  plt.plot(total_val_loss, label = "Val_accurloss")
+  plt.plot([initial_epochs-1, initial_epochs-1], plt.ylim(), label = 'Start fine tuning')
+  plt.legend(loc = "upper right")
+  plt.title("Training and Validation loss")
